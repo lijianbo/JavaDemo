@@ -7,6 +7,18 @@
 
 <h2>Veterinarians</h2>
 
+<form th:action="@{/vets.html}" method="get" class="form-horizontal" style="margin-bottom: 15px;">
+    <div class="form-group">
+        <div class="col-sm-8">
+            <input class="form-control" placeholder="Search by name" th:value="${search}" name="search"/>
+        </div>
+        <div class="col-sm-4">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a class="btn btn-default" th:href="@{/vets.html}">Clear</a>
+        </div>
+    </div>
+</form>
+
 <table id="vets" class="table table-striped">
   <thead>
   <tr>
@@ -28,27 +40,27 @@
   <span>Pages:</span>
   <span>[</span>
   <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/vets.html?page=__${i}__'}">[[${i}]]</a>
+      <a th:if="${currentPage != i}" th:href="@{'/vets.html?page=__${i}__' + ${search != null ? '&search=' + search : ''}}">[[${i}]]</a>
       <span th:unless="${currentPage != i}">[[${i}]]</span>
     </span>
   <span>]&nbsp;</span>
   <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/vets.html?page=1'}" title="First"
+      <a th:if="${currentPage > 1}" th:href="@{'/vets.html?page=1' + ${search != null ? '&search=' + search : ''}}" title="First"
          class="fa fa-fast-backward"></a>
       <span th:unless="${currentPage > 1}" title="First" class="fa fa-fast-backward"></span>
     </span>
   <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/vets.html?page=__${currentPage - 1}__'}" title="Previous"
+      <a th:if="${currentPage > 1}" th:href="@{'/vets.html?page=__${currentPage - 1}__' + ${search != null ? '&search=' + search : ''}}" title="Previous"
          class="fa fa-step-backward"></a>
       <span th:unless="${currentPage > 1}" title="Previous" class="fa fa-step-backward"></span>
     </span>
   <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html?page=__${currentPage + 1}__'}" title="Next"
+      <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html?page=__${currentPage + 1}__' + ${search != null ? '&search=' + search : ''}}" title="Next"
          class="fa fa-step-forward"></a>
       <span th:unless="${currentPage < totalPages}" title="Next" class="fa fa-step-forward"></span>
     </span>
   <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html?page=__${totalPages}__'}" title="Last"
+      <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html?page=__${totalPages}__' + ${search != null ? '&search=' + search : ''}}" title="Last"
          class="fa fa-fast-forward"></a>
       <span th:unless="${currentPage < totalPages}" title="Last" class="fa fa-fast-forward"></span>
     </span>
