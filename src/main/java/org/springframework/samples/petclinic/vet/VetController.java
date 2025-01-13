@@ -51,6 +51,17 @@ class VetController {
 		return addPaginationModel(page, paginated, model);
 	}
 
+	@GetMapping("/vets/specialty")
+	public String showvetsbyspecialt(@RequestParam(defaultValue = "1") int page, 
+                                      @RequestParam String specialty, 
+                                      Model model) {
+		Page<Vet> paginated = findPaginatedBySpecialty(specialty, page);
+		Vets vets = new Vets();
+		vets.getVetList().addAll(paginated.toList());
+		model.addAttribute("specialty", specialty);
+		return addPaginationModel(page, paginated, model);
+	}
+
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {
 		List<Vet> listVets = paginated.getContent();
 		model.addAttribute("currentPage", page);
@@ -64,6 +75,12 @@ class VetController {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return vetRepository.findAll(pageable);
+	}
+
+	private Page<Vet> findPaginatedBySpecialty(String specialty, int page) {
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		return vetRepository.findBySpecialtiesNameContainingIgnoreCase(specialty, pageable);
 	}
 
 	@GetMapping({ "/vets" })
